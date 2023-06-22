@@ -1,7 +1,7 @@
-### Title: Making a checklist
-Use: Use this when making a new checklist<br>
-Type: read-do<br>
-Date: 06/22/2023<br>
+### **Title**: Making a checklist
+**Use**: Use this when making a new checklist<br>
+**Type**: read-do<br>
+**Date**: 06/22/2023<br>
 
 [ ] Determine a title for the checklist<br>
 [ ] Create the header title, use, type, date<br>
