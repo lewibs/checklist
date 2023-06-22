@@ -6,7 +6,7 @@
 ### Checklist
 [ ] Determine a title for the checklist<br>
 [ ] Create the header title, use, type, date<br>
-[ ] make a list of checkboxes with easy to use items<br>
+[ ] make a list of checkboxes for each step<br>
 [ ] add notes for more complex info<br>
 
 ### Notes:
