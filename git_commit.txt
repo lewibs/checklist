@@ -8,8 +8,8 @@ Checklist
 [ ] Check status
 [ ] Add related files
 [ ] git commit
-[ ] state your summary
-[ ] state your note
+[ ] state your message
+[ ] state your discription
 [ ] write and exit
 
 Notes
