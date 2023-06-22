@@ -1,6 +1,6 @@
 ### Title: Making a checklist
 Use: Use this when making a new checklist<br>
-type: read-do<br>
+Type: read-do<br>
 Date: 06/22/2023<br>
 
 [ ] Determine a title for the checklist<br>
