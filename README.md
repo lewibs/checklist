@@ -9,4 +9,6 @@ However, you as the developer are responsible for knowing when its time to creat
 
 ## lists
 * <a href="./making_a_checklist.txt">making a checklist</a>
-* <a href="./git_commit.txt">git commit</a>
+
+* **<a href="./git">git</a>**
+    * <a href="./git/git_commit.txt">git commit</a>
