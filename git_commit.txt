@@ -8,11 +8,13 @@ Checklist
 [ ] Check status
 [ ] Add related files
 [ ] git commit
+[ ] provide tag
 [ ] state your message
 [ ] state your discription
 [ ] write and exit
 
 Notes
+* a tag is the start of the commit message and looks like [bug]
 * all files added should relate to a specific task
 * the commit summary should be short and simply state what was changed in 50 chars
 * the note should go into detail about why these changes were made
