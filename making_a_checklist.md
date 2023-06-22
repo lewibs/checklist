@@ -3,10 +3,10 @@ Use: Use this when making a new checklist
 type: read-do
 Date: 06/22/2023
 
-[] Determine a title for the checklist<br>
-[] Create the header title, use, type, date<br>
-[] make a list of checkboxes with easy to use items<br>
-[] add notes for more complex info<br>
+[ ] Determine a title for the checklist<br>
+[ ] Create the header title, use, type, date<br>
+[ ] make a list of checkboxes with easy to use items<br>
+[ ] add notes for more complex info<br>
 
 ### Notes:
 * Title should give enough info to know what checklist to pick from a list of titles alone
