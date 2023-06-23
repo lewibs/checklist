@@ -91,7 +91,7 @@ def makeReadme(dirpath, depth=0):
     for item in items:
         appendContentTxt("") 
         for i in range(0, depth):
-            #appendContentMd("  ")
+            appendContentMd("  ")
             appendContentTxt("  ", True) 
         appendContentMd("* ")
         appendContentTxt("* ", True)
