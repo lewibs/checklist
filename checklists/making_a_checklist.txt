@@ -1,6 +1,6 @@
 Title: Making a checklist
-Use: Use this when making a new checklist<br>
-Type: do-read
+Use: Use this when making a new checklist
+Type: do-confirm
 Date: 06/22/2023
 
 Checklist
@@ -15,4 +15,4 @@ Notes:
 * Use is the trigger item that causes you to use the checklist
 * No more then 8 short to-do check boxes
 * The date is last update time in mm/dd/yyyy format
-* The type can be either do-read or read-do
+* The type can be either do-confirm or read-do
