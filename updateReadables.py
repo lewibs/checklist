@@ -81,7 +81,7 @@ def appendChecklist(path):
 
     path = path.replace(cwd, ".")
 
-    appendContentMd(f"<a href='{path}'>{title}</a> - {use}<br>")
+    appendContentMd(f"<a href='{path}'>{title}</a> - {use}<br>\n")
     appendContentTxt(f"{title} - {use}\n",  True)
     
 def makeReadme(dirpath, depth=0):
