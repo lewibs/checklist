@@ -14,7 +14,7 @@ However, you as the developer are responsible for knowing when its time to creat
 do things differently.
 
 # Checklists
-* <a href='..\checklists\making_a_checklist.txt'>Making a checklist</a> - Use this when making a new checklist<br>
+* <a href='.\checklists\making_a_checklist.txt'>Making a checklist</a> - Use this when making a new checklist<br>
 * git<br>
-  * <a href='..\checklists\git\git_commit.txt'>git commit</a> - use this when making a commit<br>
+  * <a href='.\checklists\git\git_commit.txt'>git commit</a> - use this when making a commit<br>
 <br>

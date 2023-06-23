@@ -37,7 +37,7 @@ def appendChecklist(path, depth):
         title = file.readline().split(":")[1].strip()
         use = file.readline().split(":")[1].strip()
 
-    path = path.replace(cwd, "..")
+    path = path.replace(cwd, ".")
 
     appendContent(f"<a href='{path}'>{title}</a> - {use}<br>\n")
     
