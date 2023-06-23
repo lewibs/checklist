@@ -15,23 +15,36 @@ pdf_align = "L"
 
 directory = os.path.join(cwd, "checklists")
 readme_path = os.path.join(cwd, "README.md")
-readme_content = '''
-# Intro
-The use of this is to help software developers write better software and have better habits when working
 
-This was inspired by <a href="https://a.co/d/9DpHQHJ">The Checklist Manifesto</a>, which is a book by Atul 
+readme_content = {
+    "why": "The use of this is to help software developers write better software and have better habits when working.",
+    "book": '''This was inspired by {}, which is a book by Atul 
 Gawande that highlights the power of checklists in improving performance and reducing errors. Gawande argues 
 that even experts can benefit from using checklists to ensure consistency and enhance teamwork. He provides 
 examples from various industries, such as medicine and aviation, to demonstrate how checklists can save lives 
 and improve outcomes. The book emphasizes the importance of simplicity, standardization, and communication in 
 checklist design and implementation. Overall, it advocates for the systematic use of checklists to enhance 
-productivity and safety in complex tasks.
+productivity and safety in complex tasks.''',
+    "call_to_arms": "However, you as the developer are responsible for knowing when its time to creativly ignore the checklist and do things differently.",
+    "checklists": "",
+}
 
-However, you as the developer are responsible for knowing when its time to creativly ignore the checklist and 
-do things differently.
+book_link = "https://a.co/d/9DpHQHJ"
+book_name = "The Checklist Manifesto"
 
-# Checklists
-'''
+content_md = {
+    "why": readme_content["why"][:],
+    "book": readme_content["book"][:].format(f"<a href='{book_link}'>{book_name}</a>"),
+    "call_to_arms": readme_content["call_to_arms"][:],
+    "checklists": readme_content["checklists"][:]
+}
+
+content_txt = {
+    "why": readme_content["why"][:],
+    "book": readme_content["book"][:].format(f"{book_name}"),
+    "call_to_arms": readme_content["call_to_arms"][:],
+    "checklists": readme_content["checklists"][:]
+}
 
 def checkCwd():
     global cwd
@@ -40,9 +53,9 @@ def checkCwd():
     if not os.path.exists(path):
         raise Exception("must run script from its own location")
 
-def appendContent(new_content):
-    global readme_content
-    readme_content = readme_content + new_content
+def appendContentMd(new_content):
+    global content_md
+    content_md["checklists"] = content_md["checklists"] + new_content
 
 def appendChecklist(path):
     with open(path, "r") as file:
@@ -51,7 +64,7 @@ def appendChecklist(path):
 
     path = path.replace(cwd, ".")
 
-    appendContent(f"<a href='{path}'>{title}</a> - {use}<br>\n")
+    appendContentMd(f"<a href='{path}'>{title}</a> - {use}<br>\n")
     
 def makeReadme(dirpath, depth=0):
     items = os.listdir(dirpath)
@@ -59,13 +72,13 @@ def makeReadme(dirpath, depth=0):
 
     for item in items:
         for i in range(0, depth):
-            appendContent("  ") 
-        appendContent("* ")
+            appendContentMd("  ") 
+        appendContentMd("* ")
 
         item_path = os.path.join(dirpath, item)
         
         if os.path.isdir(item_path):
-            appendContent(f"<a href='{item_path.replace(cwd, '.')}'>{item}</a>" + "<br>\n")
+            appendContentMd(f"<a href='{item_path.replace(cwd, '.')}'>{item}</a>" + "<br>\n")
             addDirToPdf(item_path, item)         
             makeReadme(item_path, depth + 1)
         else:
@@ -76,7 +89,15 @@ def writeReadme():
     global readme_path
     global readme_content
     with open(readme_path, "w") as file:
-        file.write(readme_content)
+        content = f'''
+# Intro
+{content_md["why"]}<br><br>
+{content_md["book"]}<br><br>
+{content_md["call_to_arms"]}<br><br>
+# Checklists
+{content_md["checklists"]}
+        '''
+        file.write(content)
 
 def writeTextToPdf(text, addPage=True):
     global pdf
@@ -84,33 +105,26 @@ def writeTextToPdf(text, addPage=True):
     if addPage:
         pdf.add_page()
 
-    #check if its already been split
-    if isinstance(text, list):
-        text = text.splitlines()
+    chunk_size = int(pdf_width / 2)
 
-        for line in text:
-            writeTextToPdf(line, False)
-    else:
-        chunk_size = int(pdf_width / 2)
+    start = 0
+    end = chunk_size
 
-        start = 0
-        end = chunk_size
+    while start < len(text):
+        # Check if the chunk ends in the middle of a word
+        if end < len(text) and not text[end].isspace() and not text[end-1].isspace():
+            # Find the last space character before the end position
+            while end > start and not text[end-1].isspace():
+                end -= 1
 
-        while start < len(text):
-            # Check if the chunk ends in the middle of a word
-            if end < len(text) and not text[end].isspace() and not text[end-1].isspace():
-                # Find the last space character before the end position
-                while end > start and not text[end-1].isspace():
-                    end -= 1
+        chunk = text[start:end]
+        pdf.cell(pdf_width, pdf_height, txt = chunk, ln = pdf_ln, align = pdf_align)
 
-            chunk = text[start:end]
-            pdf.cell(pdf_width, pdf_height, txt = chunk, ln = pdf_ln, align = pdf_align)
+        start = end
+        end = min(start + chunk_size, len(text))  # Update the end position
 
-            start = end
-            end = min(start + chunk_size, len(text))  # Update the end position
-
-            if start == end:
-                break
+        if start == end:
+            break
 
 def addDirToPdf(path, dirName):
     global pdf
@@ -133,7 +147,7 @@ def writePdf():
     pdf.output(pdf_path) 
 
 
-writeTextToPdf(readme_content)
+#writeTextToPdf(readme_content)
 checkCwd()
 makeReadme(directory)
 writeReadme()
