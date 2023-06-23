@@ -47,7 +47,7 @@ def makeReadme(dirpath, depth=0):
 
     for item in items:
         for i in range(0, depth):
-                appendContent("  ") 
+                appendContent("  \t") 
 
         item_path = os.path.join(dirpath, item)
         
