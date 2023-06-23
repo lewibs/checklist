@@ -1,13 +1,19 @@
 import os
 # https://pyfpdf.readthedocs.io/en/latest/ReferenceManual/index.html
 from fpdf import FPDF
+from PyPDF2 import PdfMerger
 
 cwd = os.getcwd()
 
-pdf = FPDF()
-pdf.set_font("Arial", size = 12)
+def initPDF():   
+    pdf = FPDF()
+    pdf.set_font("Arial", size = 12)
+    return pdf
+
+pdf = initPDF()
 pdfPages = [] #added backwards
 pdf_path = os.path.join(cwd, "checklist.pdf")
+temp_pdf_path = os.path.join(cwd, "temp.pdf")
 pdf_width = 200
 pdf_height = 10
 pdf_ln = True
@@ -26,7 +32,7 @@ and improve outcomes. The book emphasizes the importance of simplicity, standard
 checklist design and implementation. Overall, it advocates for the systematic use of checklists to enhance 
 productivity and safety in complex tasks.''',
     "call_to_arms": "However, you as the developer are responsible for knowing when its time to creativly ignore the checklist and do things differently.",
-    "checklists": "",
+    "checklists": None,
 }
 
 book_link = "https://a.co/d/9DpHQHJ"
@@ -36,14 +42,14 @@ content_md = {
     "why": readme_content["why"][:],
     "book": readme_content["book"][:].format(f"<a href='{book_link}'>{book_name}</a>"),
     "call_to_arms": readme_content["call_to_arms"][:],
-    "checklists": readme_content["checklists"][:]
+    "checklists": ""
 }
 
 content_txt = {
     "why": readme_content["why"][:],
     "book": readme_content["book"][:].format(f"{book_name}"),
     "call_to_arms": readme_content["call_to_arms"][:],
-    "checklists": readme_content["checklists"][:]
+    "checklists": []
 }
 
 def checkCwd():
@@ -57,6 +63,17 @@ def appendContentMd(new_content):
     global content_md
     content_md["checklists"] = content_md["checklists"] + new_content
 
+def appendContentTxt(new_content, addToLast=False):
+    global content_txt
+    if addToLast:
+        if len(content_txt["checklists"]) == 0:
+            content_txt["checklists"] = [new_content]
+        else:
+            content_txt["checklists"][-1] = content_txt["checklists"][-1] + new_content
+    else:
+        content_txt["checklists"].append(new_content)
+        
+
 def appendChecklist(path):
     with open(path, "r") as file:
         title = file.readline().split(":")[1].strip()
@@ -64,21 +81,26 @@ def appendChecklist(path):
 
     path = path.replace(cwd, ".")
 
-    appendContentMd(f"<a href='{path}'>{title}</a> - {use}<br>\n")
+    appendContentMd(f"<a href='{path}'>{title}</a> - {use}<br>")
+    appendContentTxt(f"{title} - {use}\n",  True)
     
 def makeReadme(dirpath, depth=0):
     items = os.listdir(dirpath)
     items = sorted(items, key=lambda x: os.path.isdir(os.path.join(dirpath, x)))
 
     for item in items:
+        appendContentTxt("") 
         for i in range(0, depth):
-            appendContentMd("  ") 
+            appendContentMd("  ")
+            appendContentTxt("  ", True) 
         appendContentMd("* ")
+        appendContentTxt("* ", True)
 
         item_path = os.path.join(dirpath, item)
         
         if os.path.isdir(item_path):
-            appendContentMd(f"<a href='{item_path.replace(cwd, '.')}'>{item}</a>" + "<br>\n")
+            appendContentMd(f"<a href='{item_path.replace(cwd, '.')}'>{item}</a><br>")
+            appendContentTxt(f"{item}\n", True)
             addDirToPdf(item_path, item)         
             makeReadme(item_path, depth + 1)
         else:
@@ -99,13 +121,11 @@ def writeReadme():
         '''
         file.write(content)
 
-def writeTextToPdf(text, addPage=True):
-    global pdf
-
+def writeTextToPdf(text, addPage=True, pdf=pdf):
     if addPage:
         pdf.add_page()
 
-    chunk_size = int(pdf_width / 2)
+    chunk_size = int(pdf_width / 2.1)
 
     start = 0
     end = chunk_size
@@ -141,15 +161,43 @@ def addChecklistToPdf(path):
     for x in f:
         pdf.cell(pdf_width, pdf_height, txt = x, ln = pdf_ln, align = pdf_align)
 
-
 def writePdf():
     global pdf
     pdf.output(pdf_path) 
 
+    pdf = initPDF()
+    writeContentToPdf(pdf)
+    pdf.output(temp_pdf_path)
 
-#writeTextToPdf(readme_content)
+    # Create an instance of PdfFileMerger
+    pdf_merger = PdfMerger()
+
+    # Add the PDF files to be merged
+    pdf_merger.append(temp_pdf_path)
+    pdf_merger.append(pdf_path)
+
+    # Save the merged PDF to a new file
+    pdf_merger.write(pdf_path)
+
+    # Close the PdfFileMerger instance
+    pdf_merger.close()
+
+    os.remove(temp_pdf_path)
+
+
+def writeContentToPdf(pdf=pdf):
+    writeTextToPdf("Intro\n", pdf=pdf)
+    writeTextToPdf(content_txt["why"], False, pdf=pdf)
+    writeTextToPdf("\n", False, pdf=pdf)
+    writeTextToPdf(content_txt["book"], False, pdf=pdf)
+    writeTextToPdf("\n", False, pdf=pdf)
+    writeTextToPdf(content_txt["call_to_arms"], False, pdf=pdf)
+    writeTextToPdf("\n", False, pdf=pdf)
+    writeTextToPdf("Checklists\n", pdf=pdf)
+    for item in content_txt["checklists"]:
+        writeTextToPdf(item, False, pdf=pdf)
+
 checkCwd()
 makeReadme(directory)
 writeReadme()
 writePdf()
-##printReadme()
