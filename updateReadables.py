@@ -7,7 +7,7 @@ cwd = os.getcwd()
 
 def initPDF():   
     pdf = FPDF()
-    pdf.set_font("Arial", size = 12)
+    pdf.set_font("Arial", size = 10)
     return pdf
 
 pdf = initPDF()
