@@ -1,5 +1,5 @@
 import os
-#import subprocess
+# https://pyfpdf.readthedocs.io/en/latest/ReferenceManual/index.html
 from fpdf import FPDF
 
 cwd = os.getcwd()
@@ -8,6 +8,10 @@ pdf = FPDF()
 pdf.set_font("Arial", size = 12)
 pdfPages = [] #added backwards
 pdf_path = os.path.join(cwd, "checklist.pdf")
+pdf_width = 200
+pdf_height = 10
+pdf_ln = True
+pdf_align = "L"
 
 directory = os.path.join(cwd, "checklists")
 readme_path = os.path.join(cwd, "README.md")
@@ -28,17 +32,6 @@ do things differently.
 
 # Checklists
 '''
-
-# def runScriptAt(path, depth):
-#     backwards = "../"
-#     for i in range(0, depth):
-#         backwards = backwards + "../"
-
-#     os.chdir(path)
-#     name = os.path.basename(__file__)
-#     path = os.path.join(backwards, name)
-#     subprocess.call(["python", path])
-#     os.chdir(backwards)
 
 def checkCwd():
     global cwd
@@ -79,21 +72,50 @@ def makeReadme(dirpath, depth=0):
             addChecklistToPdf(item_path)
             appendChecklist(item_path)
 
-    # this is not needed right now so i am gonna stop working on it and work on more important things in my life
-    # if (depth > 0):
-    #     runScriptAt(dirpath, depth)
-
 def writeReadme():
     global readme_path
     global readme_content
     with open(readme_path, "w") as file:
         file.write(readme_content)
 
+def writeTextToPdf(text, addPage=True):
+    global pdf
+
+    if addPage:
+        pdf.add_page()
+
+    #check if its already been split
+    if isinstance(text, list):
+        text = text.splitlines()
+
+        for line in text:
+            writeTextToPdf(line, False)
+    else:
+        chunk_size = int(pdf_width / 2)
+
+        start = 0
+        end = chunk_size
+
+        while start < len(text):
+            # Check if the chunk ends in the middle of a word
+            if end < len(text) and not text[end].isspace() and not text[end-1].isspace():
+                # Find the last space character before the end position
+                while end > start and not text[end-1].isspace():
+                    end -= 1
+
+            chunk = text[start:end]
+            pdf.cell(pdf_width, pdf_height, txt = chunk, ln = pdf_ln, align = pdf_align)
+
+            start = end
+            end = min(start + chunk_size, len(text))  # Update the end position
+
+            if start == end:
+                break
+
 def addDirToPdf(path, dirName):
     global pdf
     pdf.add_page()
-
-    pdf.cell(200, 10, txt = dirName, ln = 1, align = 'C')
+    pdf.cell(pdf_width, pdf_height, txt = dirName, ln = pdf_ln, align = "C")
 
 def addChecklistToPdf(path):
     global pdf
@@ -103,18 +125,17 @@ def addChecklistToPdf(path):
     f = open(path, "r")
     
     for x in f:
-        pdf.cell(200, 10, txt = x, ln = 1, align = 'L')
+        pdf.cell(pdf_width, pdf_height, txt = x, ln = pdf_ln, align = pdf_align)
 
-def printReadme():
-    with open(readme_path, 'r') as file:
-        print(file.read())
 
-def printPdf():
+def writePdf():
     global pdf
     pdf.output(pdf_path) 
 
+
+writeTextToPdf(readme_content)
 checkCwd()
 makeReadme(directory)
 writeReadme()
-printPdf()
-printReadme()
+writePdf()
+##printReadme()
