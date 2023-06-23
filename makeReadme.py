@@ -39,7 +39,7 @@ def appendChecklist(path, depth):
 
     path = path.replace(cwd, "..")
 
-    appendContent(f"<a href='{path}'>{title}</a> - {use}\n")
+    appendContent(f"<a href='{path}'>{title}</a> - {use}<br>\n")
     
 def makeReadme(dirpath, depth=0):
     items = os.listdir(dirpath)
@@ -52,9 +52,9 @@ def makeReadme(dirpath, depth=0):
         item_path = os.path.join(dirpath, item)
         
         if os.path.isdir(item_path):
-            appendContent("\n" + item + "\n")
+            appendContent("<br>\n" + item + "<br>\n")
             makeReadme(item_path, depth + 1)
-            appendContent("\n")
+            appendContent("<br>\n")
         else:
             appendChecklist(item_path, depth)
 
