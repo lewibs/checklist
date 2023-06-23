@@ -53,7 +53,7 @@ def makeReadme(dirpath, depth=0):
         item_path = os.path.join(dirpath, item)
         
         if os.path.isdir(item_path):
-            appendContent(f"<a href='{item_path.replace(cwd, '.')}'>item</a>" + "<br>\n")
+            appendContent(f"<a href='{item_path.replace(cwd, '.')}'>{item}</a>" + "<br>\n")
             makeReadme(item_path, depth + 1)
             appendContent("<br>\n")
         else:
