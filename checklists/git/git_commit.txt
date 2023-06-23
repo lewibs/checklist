@@ -1,5 +1,5 @@
 Title: git commit
-Use: use this when making a commit
+Use: Use this when making a commit
 Type: read-do
 Date: 06/22/2023
 

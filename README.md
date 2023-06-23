@@ -16,5 +16,5 @@ do things differently.
 # Checklists
 * <a href='.\checklists\making_a_checklist.txt'>Making a checklist</a> - Use this when making a new checklist<br>
 * <a href='.\checklists\git'>git</a><br>
-  * <a href='.\checklists\git\git_commit.txt'>git commit</a> - use this when making a commit<br>
+  * <a href='.\checklists\git\git_commit.txt'>git commit</a> - Use this when making a commit<br>
 <br>
