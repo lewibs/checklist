@@ -53,7 +53,7 @@ def makeReadme(dirpath, depth=0):
         item_path = os.path.join(dirpath, item)
         
         if os.path.isdir(item_path):
-            appendContent("<br>\n" + item + "<br>\n")
+            appendContent(item + "<br>\n")
             makeReadme(item_path, depth + 1)
             appendContent("<br>\n")
         else:
