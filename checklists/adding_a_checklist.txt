@@ -1,0 +1,12 @@
+Title: Adding a checklist
+Use: Use this when adding a checklist to this repo
+Type: read-do
+Date: 06/22/2023
+
+Checklist
+[ ] make a fork
+[ ] make a checklist
+[ ] run makeReadme.py
+[ ] open a pr
+
+Notes:
