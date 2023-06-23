@@ -32,7 +32,7 @@ def appendContent(new_content):
     global readme_content
     readme_content = readme_content + new_content
 
-def appendChecklist(path, depth):
+def appendChecklist(path):
     with open(path, "r") as file:
         title = file.readline().split(":")[1].strip()
         use = file.readline().split(":")[1].strip()
@@ -53,11 +53,11 @@ def makeReadme(dirpath, depth=0):
         item_path = os.path.join(dirpath, item)
         
         if os.path.isdir(item_path):
-            appendContent(item + "<br>\n")
+            appendContent(f"<a href='{item_path.replace(cwd, '.')}'>item</a>" + "<br>\n")
             makeReadme(item_path, depth + 1)
             appendContent("<br>\n")
         else:
-            appendChecklist(item_path, depth)
+            appendChecklist(item_path)
 
 def writeReadme():
     global readme_path
