@@ -23,7 +23,7 @@ directory = os.path.join(cwd, "checklists")
 readme_path = os.path.join(cwd, "README.md")
 
 readme_content = {
-    "why": "The use of this is to help software developers write better software and have better habits when working.",
+    "why": "This is to help software developers write better software and have better habits when working.",
     "book": '''This was inspired by {}, which is a book by Atul 
 Gawande that highlights the power of checklists in improving performance and reducing errors. Gawande argues 
 that even experts can benefit from using checklists to ensure consistency and enhance teamwork. He provides 

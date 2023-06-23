@@ -1,6 +1,6 @@
 
 # Intro
-The use of this is to help software developers write better software and have better habits when working.<br><br>
+This is to help software developers write better software and have better habits when working.<br><br>
 This was inspired by <a href='https://a.co/d/9DpHQHJ'>The Checklist Manifesto</a>, which is a book by Atul 
 Gawande that highlights the power of checklists in improving performance and reducing errors. Gawande argues 
 that even experts can benefit from using checklists to ensure consistency and enhance teamwork. He provides 
