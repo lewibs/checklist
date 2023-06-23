@@ -1,4 +1,5 @@
 import os
+import subprocess
 
 cwd = os.getcwd()
 directory = os.path.join(cwd, "checklists")
@@ -20,6 +21,18 @@ do things differently.
 
 # Checklists
 '''
+
+# def runScriptAt(path, depth):
+#     backwards = "../"
+#     for i in range(0, depth):
+#         backwards = backwards + "../"
+
+#     os.chdir(path)
+#     name = os.path.basename(__file__)
+#     path = os.path.join(backwards, name)
+#     subprocess.call(["python", path])
+#     os.chdir(backwards)
+
 
 def checkCwd():
     global cwd
@@ -53,11 +66,15 @@ def makeReadme(dirpath, depth=0):
         item_path = os.path.join(dirpath, item)
         
         if os.path.isdir(item_path):
-            appendContent(f"<a href='{item_path.replace(cwd, '.')}'>{item}</a>" + "<br>\n")
+            print(depth)
+            appendContent(f"<a href='{item_path.replace(cwd, '.')}'>{item}</a>" + "<br>\n")            
             makeReadme(item_path, depth + 1)
-            appendContent("<br>\n")
         else:
             appendChecklist(item_path)
+
+    # this is not needed right now so i am gonna stop working on it and work on more important things in my life
+    # if (depth > 0):
+    #     runScriptAt(dirpath, depth)
 
 def writeReadme():
     global readme_path
