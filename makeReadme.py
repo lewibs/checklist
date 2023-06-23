@@ -56,7 +56,7 @@ def appendChecklist(path):
     
 def makeReadme(dirpath, depth=0):
     items = os.listdir(dirpath)
-    items.reverse()
+    items = sorted(items, key=lambda x: os.path.isdir(os.path.join(dirpath, x)))
 
     for item in items:
         for i in range(0, depth):
