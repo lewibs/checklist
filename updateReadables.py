@@ -1,7 +1,14 @@
 import os
-import subprocess
+#import subprocess
+from fpdf import FPDF
 
 cwd = os.getcwd()
+
+pdf = FPDF()
+pdf.set_font("Arial", size = 12)
+pdfPages = [] #added backwards
+pdf_path = os.path.join(cwd, "checklist.pdf")
+
 directory = os.path.join(cwd, "checklists")
 readme_path = os.path.join(cwd, "README.md")
 readme_content = '''
@@ -32,7 +39,6 @@ do things differently.
 #     path = os.path.join(backwards, name)
 #     subprocess.call(["python", path])
 #     os.chdir(backwards)
-
 
 def checkCwd():
     global cwd
@@ -66,10 +72,11 @@ def makeReadme(dirpath, depth=0):
         item_path = os.path.join(dirpath, item)
         
         if os.path.isdir(item_path):
-            print(depth)
-            appendContent(f"<a href='{item_path.replace(cwd, '.')}'>{item}</a>" + "<br>\n")            
+            appendContent(f"<a href='{item_path.replace(cwd, '.')}'>{item}</a>" + "<br>\n")
+            addDirToPdf(item_path, item)         
             makeReadme(item_path, depth + 1)
         else:
+            addChecklistToPdf(item_path)
             appendChecklist(item_path)
 
     # this is not needed right now so i am gonna stop working on it and work on more important things in my life
@@ -82,11 +89,32 @@ def writeReadme():
     with open(readme_path, "w") as file:
         file.write(readme_content)
 
+def addDirToPdf(path, dirName):
+    global pdf
+    pdf.add_page()
+
+    pdf.cell(200, 10, txt = dirName, ln = 1, align = 'C')
+
+def addChecklistToPdf(path):
+    global pdf
+    pdf.add_page()
+    
+    # open the text file in read mode
+    f = open(path, "r")
+    
+    for x in f:
+        pdf.cell(200, 10, txt = x, ln = 1, align = 'L')
+
 def printReadme():
     with open(readme_path, 'r') as file:
         print(file.read())
 
+def printPdf():
+    global pdf
+    pdf.output(pdf_path) 
+
 checkCwd()
 makeReadme(directory)
 writeReadme()
+printPdf()
 printReadme()
