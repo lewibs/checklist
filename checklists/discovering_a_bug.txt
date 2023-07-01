@@ -1,14 +1,16 @@
 Title: Discovering a bug
 Use: Use this when you find a bug
 Type: read-do
-Date: 6/22/2023
+Date: 7/1/2023
 
 Checklist
-[ ] commit current progress
+[ ] write down what you were working on
 [ ] make an issue report
-[ ] fix bug
-[ ] add comment if needed
-[ ] commit solution with issue #
+[ ] provide bug description
+[ ] steps to reproduce
+[ ] note things you have tried
+[ ] provide links to notable files 
+[ ] finish what you were working on before
 
 Notes:
 * The comment should only be written if the solution was not obvious
