@@ -1,0 +1,13 @@
+Title: Making an issue
+Use: Use this when you are making an issue in github
+Type: read-do
+Date: 7/1/2023
+
+Checklist
+[ ] Make an issue in todo
+[ ] Add a descriptive Title
+[ ] Give a discription on the issue
+[ ] Provide links or steps as needed
+[ ] Add tags
+
+Notes:
