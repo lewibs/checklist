@@ -1,3 +1,4 @@
+# WARNING: this is no longer maintained I moved this to my Obsidian vault
 
 # Intro
 This is to help software developers write better software and have better habits when working.<br><br>
